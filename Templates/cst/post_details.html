@@ -3,6 +3,7 @@
 {% block title %} Post Details{% endblock %}
 {% block head %}
     {% include "partials/head.html" %}
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
 {% endblock %}
 {% block content %}
 <body class="d-flex flex-column">
@@ -13,85 +14,64 @@
     <!-- Page Content-->
     <section class="py-5">
         <div class="container px-5 my-5">
+            {% include "partials/messages.html" %}
             <div class="row gx-5">
                 <div class="col-lg-8">
-                    <div class="card shadow-sm">
+                    <div class="card border-0 shadow rounded-3 overflow-hidden">
                         <div class="card-body">
-                            <!-- Post content-->
-                            <article>
-                                <!-- Post header-->
-                                <header class="mb-4">
-                                    <!-- Post title-->
-                                    <h1 class="fw-bolder mb-1">{{ object.title }}</h1>
-                                    <!-- Post meta content-->
-                                    <div class="text-muted fst-italic mb-2">{{ object.created }}</div>
-                                    <!-- Post categories-->
-                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
-                                </header>
-                                <!-- Preview image figure-->
-                                <figure class="mb-4"><img class="img-fluid rounded" src="{{ object.image.url }}" alt="..." /></figure>
-                                <!-- Post content-->
-                                <section class="mb-5">
-                                    <p class="fs-5 mb-4">{{ object.body }}</p>
-                                </section>
-                            </article>
-                            <!-- Comments section-->
-                            <section>
-                                <div class="card bg-light">
-                                    <div class="card-body">
-                                        <!-- Comment form-->
-                                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                                        <!-- Comment with nested comments-->
-                                        <div class="d-flex mb-4">
-                                            <!-- Parent comment-->
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                                <!-- Child comment 1-->
-                                                <div class="d-flex mt-4">
-                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                    <div class="ms-3">
-                                                        <div class="fw-bold">Commenter Name</div>
-                                                        And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
+                            <div class="row gx-0">
+                                <article>
+                                    <!-- Post header-->
+                                    <header class="mb-4">
+                                        <!-- Post title-->
+                                        <h1 class="fw-bolder mb-1">{{ object.title }}</h1>
+                                        <!-- Post meta content-->
+                                        <div class="text-muted fst-italic mb-2">{{ object.created }}</div>
+                                        <!-- Post categories-->
+                                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">{{ object.category }}</a>
+                                        <a class="btn btn-primary btn-sm" href="{% url 'cst:update_post' object.slug %}">Update</a>
+                                        <a href="" class="btn-sm btn btn-outline-danger" data-toggle="modal" data-target="#object"> Delete</a>
+                                        <div class="modal fade" id="object" style="display: none;" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Are you sure?</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"><span>×</span>
+                                                        </button>
                                                     </div>
-                                                </div>
-                                                <!-- Child comment 2-->
-                                                <div class="d-flex mt-4">
-                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                    <div class="ms-3">
-                                                        <div class="fw-bold">Commenter Name</div>
-                                                        When you put money directly to a problem, it makes a good headline.
+                                                    <div class="modal-body">Clicking the "delete" button below would delete this post permanently.</div>
+                                                    <div class="modal-footer">
+                                                        <form action="{% url 'cst:delete_post' object.slug %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="btn btn-warning btn-block">Delete</button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Single comment-->
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
+                                    </header>
+                                    <!-- Preview image figure-->
+                                    <figure class="mb-4"><img class="img-fluid rounded" src="{% if object.image.url != '' %} {{ object.image.url }} {% else %} {% static 'images/tutorial.png' %} {% endif %}" alt="..." /></figure>
+                                    <!-- Post content-->
+                                    <section class="mb-5">
+                                        <p class="fs-5 mb-4">{{ object.body|safe }}</p>
+                                    </section>
+                                </article>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <h3 class="fw-bolder mb-1">Recent Post</h3>
                     {% for post in recent %}
-                    <div class="card mb-3" style="width: 18rem;">
+                    <div class="card border-0 shadow rounded-3 overflow-hidden mb-3" style="width: 18rem;">
                         <img src="{{ post.image.url }}" class="card-img-top" alt="...">
                         <div class="card-body">
                           <h5 class="card-title">{{ post.title }}</h5>
                           <p class="card-text">{{ post.body|truncatechars:100}}</p>
                           <a href="{% url 'cst:post_details' post.slug %}" class="btn btn-primary">View Tutorial</a>
                         </div>
-                      </div>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
@@ -100,6 +80,8 @@
 </main>
 {% endblock %}
 {% include "partials/footer.html" %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}" ></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
 {% include "partials/script.html" %}
 </body>
 {% endblock %}

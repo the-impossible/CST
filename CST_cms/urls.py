@@ -4,7 +4,11 @@ from django.urls import path
 # My App imports
 from CST_cms.views import (
     HomeView,
-    PostDetailView
+
+    PostDetailView,
+    CreatePostView,
+    UpdatePostView,
+    PostDeleteView,
 )
 
 app_name = 'cst'
@@ -14,4 +18,7 @@ urlpatterns = [
 
     # POST
     path('post_details/<slug>', PostDetailView.as_view(), name='post_details'),
+    path('create_post', CreatePostView.as_view(), name='create_post'),
+    path('update_post/<slug>', UpdatePostView.as_view(), name='update_post'),
+    path('delete_post/<slug>', PostDeleteView.as_view(), name='delete_post'),
 ]

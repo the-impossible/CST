@@ -8,6 +8,8 @@ django = "*"
 bcrypt = "*"
 argon2-cffi = "*"
 pillow = "*"
+django-crispy-forms = "*"
+django-ckeditor = "*"
 
 [dev-packages]
 
