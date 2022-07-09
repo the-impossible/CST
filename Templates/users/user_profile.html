@@ -21,7 +21,7 @@
                         <div class="card-body">
                             <a href="{% url 'users:profile_edit' request.user.userprofile.profile_id %}" class="btn btn-outline-secondary float-right"><i class="fa fa-user"></i> Edit</a>
                             <div class="d-flex align-items-center mt-lg-5 mb-4">
-                                <img class="rounded-circle me-3 mx-auto" src="{% if object.picture.url != '' %} {{ object.picture.url }} {% else %} {% static 'images/tutorial.png' %} {% endif %}" width="200" height="200" alt="..." />
+                                <img class="rounded-circle me-3 mx-auto" src="{% if object.picture.url != '' %} {{ object.picture.url }} {% else %} {% static 'images/user.png' %} {% endif %}" width="200" height="200" alt="..." />
                             </div>
                             <div class="ms-3 text-center">
                                 <div class="fw-bold">{{ object.user.first_name }} {{ object.user.last_name }}</div>
@@ -36,48 +36,67 @@
                         <header class="mb-4">
                             <h2 class="fw-bolder mb-1">About me</h2>
                         </header>
+                        <hr>
+                        {% if object.about %}
                         <p class="fs-5 mb-4 text-justify">{{ object.about }}</p>
-                        <header class="mb-4">
-                            <h2 class="fw-bolder mb-1">My Articles</h2>
-                        </header>
-                        <div class="row">
-                        {% for post in object.post_set.all  %}
-                        <div class="col-lg-6 mb-5">
-                            <div class="card h-100 shadow border-0">
-                                <img class="card-img-top" src="{% if post.image.url != '' %} {{ post.image.url }} {% else %} {% static 'images/tutorial.png' %} {% endif %} " alt="..." />
-                                <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2 text-white py-2 px-2">{{ post.category }}</div>
-                                    <a class="text-decoration-none text-dark" href="{% url 'cst:post_details' post.slug %}"><h5 class="card-title mb-3">{{ post.title }}</h5></a>
-                                    <p class="card-text mb-0">{{ post.body|safe|truncatechars:150 }}...</p>
+                        {% else %}
+                        <p class="fs-5 mb-4 text-center">No about found! <a href="{% url 'users:profile_edit' request.user.userprofile.profile_id %}" style="text-decoration: none;">click here to update profile</a></p>
+                        {% endif %}
+                    </article>
+                </div>
+                <article>
+                    <header class="mb-4 mt-4">
+                        <h2 class="fw-bolder mb-1 text-center">My Articles</h2>
+                    </header>
+                    <hr>
+                    <div class="row">
+                        {% if object.post_set.all %}
+                            {% for post in object.post_set.all  %}
+                            <div class="col-lg-4 col-md-4 col-sm-12 mb-5">
+                                <div class="card h-100 shadow border-0">
+                                    <img class="card-img-top" src="{% if post.image.url != '' %} {{ post.image.url }} {% else %} {% static 'images/tutorial.png' %} {% endif %} " alt="..." />
+                                    <div class="card-body p-4">
+                                        <div class="badge bg-primary bg-gradient rounded-pill mb-2 text-white py-2 px-2">{{ post.category }}</div>
+                                        <a class="text-decoration-none text-dark" href="{% url 'cst:post_details' post.slug %}"><h5 class="card-title mb-3">{{ post.title }}</h5></a>
+                                        <p class="card-text mb-0">{{ post.body|safe|truncatechars:150 }}...</p>
+
+                                    </div>
                                     {% if request.user.userprofile.profile_id == post.user.profile_id %}
-                                    <a class="btn btn-outline-primary" href="{% url 'cst:update_post' post.slug %}"><i class="fa fa-edit"></i></a>
-                                    <a class="btn btn-outline-danger" data-toggle="modal" data-target="#{{ post.user }}" href=""><i class="fa fa-trash"></i></a>
-                                    {% endif %}
-                                </div>
-                                <div class="modal fade" id="{{ post.user }}" style="display: none;" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Are you sure?</h5>
-                                                <button type="button" class="close" data-dismiss="modal"><span>×</span>
-                                                </button>
+                                    <div class="card-footer p-3 pt-0 bg-transparent border-top-0">
+                                        <div class="d-flex align-items-end justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <a class="btn btn-outline-primary mr-2" href="{% url 'cst:update_post' post.slug %}"><i class="fa fa-edit"></i></a>
+                                                <a class="btn btn-outline-danger" data-toggle="modal" data-target="#{{ post.user }}" href=""><i class="fa fa-trash"></i></a>
                                             </div>
-                                            <div class="modal-body">Clicking the "delete" button below would delete this post permanently.</div>
-                                            <div class="modal-footer">
-                                                <form action="{% url 'cst:delete_post' post.slug %}" method="POST">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-warning btn-block">Delete</button>
-                                                </form>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="modal fade" id="{{ post.user }}" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Are you sure?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">Clicking the "delete" button below would delete this post permanently.</div>
+                                                <div class="modal-footer">
+                                                    <form action="{% url 'cst:delete_post' post.slug %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-warning btn-block">Delete</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {% endfor %}
-                        </div>
-                    </article>
-                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="fs-5 mb-4 text-center">No article found! <a href="{% url 'cst:create_post' %}" style="text-decoration: none;">click here to create article</a></p>
+                        {% endif %}
+                    </div>
+                </article>
             </div>
         </div>
     </section>

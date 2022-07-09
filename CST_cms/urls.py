@@ -9,6 +9,8 @@ from CST_cms.views import (
     CreatePostView,
     UpdatePostView,
     PostDeleteView,
+
+    SearchView,
 )
 
 app_name = 'cst'
@@ -21,4 +23,6 @@ urlpatterns = [
     path('create_post', CreatePostView.as_view(), name='create_post'),
     path('update_post/<slug>', UpdatePostView.as_view(), name='update_post'),
     path('delete_post/<slug>', PostDeleteView.as_view(), name='delete_post'),
+    #QUERY
+    path('search', SearchView.as_view(), name='search'),
 ]

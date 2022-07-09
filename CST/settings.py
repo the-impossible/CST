@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'CST_cms',
     'CST_users',
+    'CST_auth',
     'crispy_forms',
     'ckeditor',
 ]

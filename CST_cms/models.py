@@ -12,7 +12,7 @@ class Post(models.Model):
     body = RichTextField()
     post_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     slug = models.SlugField(unique=True)
-    image = models.ImageField(upload_to='images')
+    image = models.ImageField(upload_to='images', blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)

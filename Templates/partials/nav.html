@@ -5,19 +5,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="{% url 'cst:home' %}">Home</a></li>
+                {% if not request.user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'auth:login' %}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'auth:register' %}">Sign Up</a></li>
+                {% endif %}
                 {% if request.user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'cst:create_post' %}">Create Tutorial</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ request.user }}</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
                         <li><a class="dropdown-item" href="{% url 'users:profile' request.user.userprofile.profile_id %}">Profile</a></li>
-                        <li><a class="dropdown-item" href="portfolio-item.html">Logout</a></li>
+                        <li>
+                            <form action="{% url 'auth:logout' %}" id="form" method="post">
+                                {% csrf_token %}
+                                <a class="dropdown-item" style="cursor: pointer;" onclick="form.submit()">Logout</a></li>
+                            </form>
                     </ul>
                 </li>
                 {% endif %}
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search Tutorial" aria-label="Search">
+            <form class="d-flex" action="{% url 'cst:search' %}" role="search" method="get">
+                <input class="form-control me-2" name="qs" type="search" placeholder="Search Tutorial" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>

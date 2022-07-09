@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('CST_cms.urls', namespace='cms')),
     path('user/', include('CST_users.urls', namespace='users')),
+    path('auth/', include('CST_auth.urls', namespace='auth')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

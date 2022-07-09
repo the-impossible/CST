@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} Home{% endblock %}
+{% block title %} Result{% endblock %}
 {% block head %}
     {% include "partials/head.html" %}
 {% endblock %}
@@ -10,31 +10,13 @@
 <main class="flex-shrink-0">
     <!-- Navigation-->
     {% include "partials/nav.html" %}
-    <!-- Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-5">
-            <div class="row gx-5 align-items-center justify-content-center">
-                <div class="col-lg-8 col-xl-8 col-xxl-8">
-                    <div class="my-5 text-center text-xl-start">
-                        <h1 class="display-5 fw-bolder text-white mb-2">Tutorial on troubleshooting microcomputers</h1>
-                        <p class="lead fw-normal text-white-50 mb-4">Do you want to create software tutorials on how to trouble shoot microcomputer? click the button below to get started</p>
-                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                            <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{% url 'auth:register' %}">Get Started</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-xxl-4 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="{% static 'images/troubleshoot.jpg' %}" alt="..." /></div>
-            </div>
-        </div>
-    </header>
-    <!-- Blog preview section-->
     <section class="py-5">
         <div class="container px-5 my-5">
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-8 col-xl-6">
                     <div class="text-center">
-                        <h2>Microcomputers Troubleshooting</h2>
-                        <p class="lead fw-normal text-muted mb-5">Below are some possible step by step tutorials on problems faced by microcomputer.</p>
+                        <h3>You Searched For </h3>
+                        <p class="lead fw-normal text-muted mb-5">{{ query }}.</p>
                     </div>
                     {% include "partials/messages.html" %}
                 </div>

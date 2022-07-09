@@ -1,5 +1,5 @@
 # My Django imports
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.text import slugify
@@ -71,3 +71,23 @@ class PostDeleteView(SuccessMessageMixin, DeleteView):
         return reverse("users:profile", kwargs={
             'pk':self.request.user.userprofile.profile_id
         })
+
+class SearchView(ListView):
+    model = Post
+    template_name = "cst/search.html"
+    paginate_by = 1
+
+    def get_queryset(self):
+        qs = self.request.GET.get('qs')
+        result = (
+            Post.objects.filter(title__icontains=qs) |
+            Post.objects.filter(category__title__icontains=qs) |
+            Post.objects.filter(body__icontains=qs) |
+            Post.objects.filter(user__user__username=qs)
+        )
+        return result
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('qs')
+        return context

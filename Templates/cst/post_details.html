@@ -51,10 +51,10 @@
                     <h3 class="fw-bolder mb-1">Recent Post</h3>
                     {% for post in recent %}
                     <div class="card border-0 shadow rounded-3 overflow-hidden mb-3" style="width: 18rem;">
-                        <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+                        <img src="{% if post.image.url != '' %} {{ post.image.url }} {% else %} {% static 'images/tutorial.png' %} {% endif %}" class="card-img-top" alt="...">
                         <div class="card-body">
                           <h5 class="card-title">{{ post.title }}</h5>
-                          <p class="card-text">{{ post.body|truncatechars:100}}</p>
+                          <p class="card-text">{{ post.body|safe|truncatechars:100}}</p>
                           <a href="{% url 'cst:post_details' post.slug %}" class="btn btn-primary">View Tutorial</a>
                         </div>
                     </div>
