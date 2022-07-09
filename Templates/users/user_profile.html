@@ -19,7 +19,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="card border-0 shadow rounded-3">
                         <div class="card-body">
-                            <a href="" class="btn btn-outline-secondary float-right"><i class="fa fa-user"></i> Edit</a>
+                            <a href="{% url 'users:profile_edit' request.user.userprofile.profile_id %}" class="btn btn-outline-secondary float-right"><i class="fa fa-user"></i> Edit</a>
                             <div class="d-flex align-items-center mt-lg-5 mb-4">
                                 <img class="rounded-circle me-3 mx-auto" src="{% if object.picture.url != '' %} {{ object.picture.url }} {% else %} {% static 'images/tutorial.png' %} {% endif %}" width="200" height="200" alt="..." />
                             </div>
