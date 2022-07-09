@@ -33,10 +33,13 @@ class CreatePostView(SuccessMessageMixin, CreateView):
     success_message = "Post created successfully! and pending approval"
 
     def get_success_url(self):
-        return reverse("cst:home")
+        return reverse("users:profile", kwargs={
+            'pk':self.request.user.userprofile.profile_id
+        })
 
     def form_valid(self, form):
         form.instance.slug = slugify(form.instance.title)
+        form.instance.user = self.request.user.userprofile
         return super().form_valid(form)
 
 class UpdatePostView(SuccessMessageMixin, UpdateView):
@@ -51,8 +54,8 @@ class UpdatePostView(SuccessMessageMixin, UpdateView):
     template_name = "cst/create_post.html"
 
     def get_success_url(self):
-        return reverse("cst:post_details", kwargs={
-            'slug':self.kwargs['slug']
+        return reverse("users:profile", kwargs={
+            'pk':self.request.user.userprofile.profile_id
         })
 
     def get_context_data(self, **kwargs):
@@ -65,4 +68,6 @@ class PostDeleteView(SuccessMessageMixin, DeleteView):
     success_message = "Post deleted successfully!"
 
     def get_success_url(self):
-        return reverse("cst:home")
+        return reverse("users:profile", kwargs={
+            'pk':self.request.user.userprofile.profile_id
+        })

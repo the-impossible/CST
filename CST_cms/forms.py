@@ -35,4 +35,4 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        exclude = ['slug', 'approval']
+        exclude = ['slug', 'approval', 'user']
