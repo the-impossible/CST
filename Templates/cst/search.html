@@ -15,8 +15,8 @@
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-8 col-xl-6">
                     <div class="text-center">
-                        <h3>You Searched For </h3>
-                        <p class="lead fw-normal text-muted mb-5">{{ query }}.</p>
+                        <h4>You Searched For: {{ query }} </h4>
+                        <p class="lead fw-normal text-muted mb-5">Result: {{ object_list.count }} found.</p>
                     </div>
                     {% include "partials/messages.html" %}
                 </div>

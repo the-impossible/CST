@@ -75,7 +75,7 @@ class PostDeleteView(SuccessMessageMixin, DeleteView):
 class SearchView(ListView):
     model = Post
     template_name = "cst/search.html"
-    paginate_by = 1
+    # paginate_by = 3
 
     def get_queryset(self):
         qs = self.request.GET.get('qs')
