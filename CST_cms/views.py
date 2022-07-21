@@ -15,7 +15,7 @@ class HomeView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return Post.objects.all().order_by('-created')
+        return Post.objects.filter(approval=True).order_by('-created')
 
 class PostDetailView(DetailView):
     model = Post
@@ -80,10 +80,10 @@ class SearchView(ListView):
     def get_queryset(self):
         qs = self.request.GET.get('qs')
         result = (
-            Post.objects.filter(title__icontains=qs) |
-            Post.objects.filter(category__title__icontains=qs) |
-            Post.objects.filter(body__icontains=qs) |
-            Post.objects.filter(user__user__username=qs)
+            Post.objects.filter(title__icontains=qs, approval=True) |
+            Post.objects.filter(category__title__icontains=qs, approval=True) |
+            Post.objects.filter(body__icontains=qs, approval=True) |
+            Post.objects.filter(user__user__username=qs, approval=True)
         )
         return result
 

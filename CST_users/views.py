@@ -6,17 +6,21 @@ from django.views.generic import DetailView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # My App imports
 from CST_users.models import UserProfile
 from CST_users.forms import UserForm, ProfileForm
 
 # Create your views here.
-class UserProfileView(DetailView):
+class UserProfileView(LoginRequiredMixin, DetailView):
+    login_url = 'auth:login'
     model = UserProfile
     template_name = "users/user_profile.html"
 
-class UpdateProfileView(SuccessMessageMixin, View):
+class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, View):
+    login_url = 'auth:login'
     form = UserForm
     form1 = ProfileForm
 

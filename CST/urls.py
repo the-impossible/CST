@@ -27,3 +27,7 @@ urlpatterns = [
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+admin.site.site_header = "Microcomputers Troubleshooting Admin"
+admin.site.site_title = "Microcomputers Troubleshooting Portal"
+admin.site.index_title = "Welcome to Microcomputers Troubleshooting Portal"

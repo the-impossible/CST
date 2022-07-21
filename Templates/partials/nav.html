@@ -18,8 +18,9 @@
                         <li>
                             <form action="{% url 'auth:logout' %}" id="form" method="post">
                                 {% csrf_token %}
-                                <a class="dropdown-item" style="cursor: pointer;" onclick="form.submit()">Logout</a></li>
+                                <a class="dropdown-item" style="cursor: pointer;" onclick="form.submit()">Logout</a>
                             </form>
+                        </li>
                     </ul>
                 </li>
                 {% endif %}
